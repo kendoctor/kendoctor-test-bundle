@@ -1,0 +1,35 @@
+{% extends '::base.html.twig' %}
+
+{% block javascripts %}
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+{% endblock %}
+
+{% block body -%}
+
+    <h1>Paper creation</h1>
+
+    <form action="{{ path('paper_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_row(form.title) }}
+        {{ form_row(form.description ) }}
+
+   
+        <p>
+            <button type="submit">Create</button>
+        </p>
+  {{ form_rest(form) }}
+    </form>
+
+
+      
+
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('paper') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+ 
+
+{% endblock %}

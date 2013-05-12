@@ -1,0 +1,177 @@
+<?php
+
+namespace Kendoctor\Bundle\TestBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ChoiceItem
+ *
+ * @ORM\Table()
+ * @ORM\Entity(repositoryClass="Kendoctor\Bundle\TestBundle\Entity\ChoiceItemRepository")
+ */
+class ChoiceItem
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="subject", type="text")
+     */
+    private $subject;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="isSingle", type="boolean")
+     */
+    private $isSingle;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime")
+     */
+    private $createdAt;
+    
+     /**
+     *
+     * @var type 
+     * @ORM\OneToMany(targetEntity="ItemGroupItem", mappedBy="ChoiceItem")
+     * 
+     */
+    private $ItemGroupItems;
+
+    /**
+     *
+     * @var type 
+     * @ORM\OneToMany(targetEntity="ChoiceItemAnswer", mappedBy="ChoiceItem")
+     */
+    private $ChoiceItemAnswers;
+    
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime;
+        $this->ItemGroupItems[] =  new \Doctrine\Common\Collections\ArrayCollection();
+        
+    }
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set subject
+     *
+     * @param string $subject
+     * @return ChoiceItem
+     */
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
+    
+        return $this;
+    }
+
+    /**
+     * Get subject
+     *
+     * @return string 
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    /**
+     * Set isSingle
+     *
+     * @param boolean $isSingle
+     * @return ChoiceItem
+     */
+    public function setIsSingle($isSingle)
+    {
+        $this->isSingle = $isSingle;
+    
+        return $this;
+    }
+
+    /**
+     * Get isSingle
+     *
+     * @return boolean 
+     */
+    public function getIsSingle()
+    {
+        return $this->isSingle;
+    }
+
+    /**
+     * Set createdAt
+     *
+     * @param \DateTime $createdAt
+     * @return ChoiceItem
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    
+        return $this;
+    }
+
+    /**
+     * Get createdAt
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Add ItemGroupItems
+     *
+     * @param \Kendoctor\Bundle\TestBundle\Entity\ItemGroupItem $itemGroupItems
+     * @return ChoiceItem
+     */
+    public function addItemGroupItem(\Kendoctor\Bundle\TestBundle\Entity\ItemGroupItem $itemGroupItems)
+    {
+        $this->ItemGroupItems[] = $itemGroupItems;
+    
+        return $this;
+    }
+
+    /**
+     * Remove ItemGroupItems
+     *
+     * @param \Kendoctor\Bundle\TestBundle\Entity\ItemGroupItem $itemGroupItems
+     */
+    public function removeItemGroupItem(\Kendoctor\Bundle\TestBundle\Entity\ItemGroupItem $itemGroupItems)
+    {
+        $this->ItemGroupItems->removeElement($itemGroupItems);
+    }
+
+    /**
+     * Get ItemGroupItems
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getItemGroupItems()
+    {
+        return $this->ItemGroupItems;
+    }
+}

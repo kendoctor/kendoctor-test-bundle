@@ -1,0 +1,36 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+<style>
+    .choiceItemAnswers_form_container2 { zoom:1;clear:both;overflow:hidden; }
+    .choiceItemAnswers_form_container2 li {float:left}
+
+</style>
+    <h1>填写答题内容</h1>
+
+    <form class="itemgroup_itemgroupitem_new_form" action="{{ path('itemgroupitem_create', {itemgroup_id: itemGroup.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form.QuestionItem.subject) }}
+
+        <ol class="choiceItemAnswers_form_container">
+        {% for ChoiceItemAnswer in form.QuestionItem.ChoiceItemAnswers %}
+            <li>
+            {{ form_errors(ChoiceItemAnswer.answer) }}
+            {{ form_widget(ChoiceItemAnswer.answer) }} 
+            {{ form_widget(ChoiceItemAnswer.isCorrect) }} 
+            </li>
+        {% endfor %}
+        </ol>
+        <p>
+            {{ form_rest(form) }}
+            <button type="submit" onclick="return itemgroup_itemgroupitem_create(this)">Create</button>
+        </p>
+    </form>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('itemgroupitem') }}">
+            Back to the list
+        </a>
+    </li>
+</ul>
+{% endblock %}

@@ -1,0 +1,221 @@
+{% extends '::base.html.twig' %}
+{% block javascripts %}
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+{% endblock %}
+{% block body -%}
+    <h1>编制试卷</h1>
+    <div class="paper">
+
+        {{ include('KendoctorTestBundle:Paper:paperShow.html.twig', { entity: entity }) }}
+        
+        <div class="itemgroups">
+            <h3>题组
+[<a href="{{path('itemgroup_new', {paper_id: entity.id, itemgroup_type: 'SINGLE_CHOICE'})}}" onclick="return paper_itemgroup_add(this);">新增单选题题组</a>]
+[<a href="{{path('itemgroup_new', {paper_id: entity.id, itemgroup_type: 'MULTIPLE_CHOICE'})}}" onclick="return paper_itemgroup_add(this);">新增多选题题组</a>]
+[][新增判断题题组][新增填空题题组]</h3>
+            <ol class="itemgroups_container">
+                {% for ItemGroup in entity.ItemGroups %}
+                    <li class="itemgroup_container">  {{ include('KendoctorTestBundle:ItemGroup:show.html.twig', { entity: ItemGroup }) }} </li>
+                {% endfor %}
+                            
+            </ol>
+        </div>
+    </div>
+    
+
+
+<li>
+                    <div>
+                        <h4>单选题（25分）[新增题目][编辑][删除]</h4>  
+                        <ol>
+                            <li>
+                                <p>下列词语中加点的字，读音完全正确的一组是[新增][编辑][删除]<p>
+                                <ol>        
+                                    <li><input type="radio" name="answer"/>调度/调控  降解/降龙伏虎  搪塞/敷衍塞责 [编辑][删除][向下]</li>
+                                    <li><input type="radio" name="answer"/>省视/省吃俭用  拓本/落拓不羁  纤绳/纤尘不染[编辑][删除][向下][向上]</li>
+                                    <li><input type="radio" name="answer"/><textarea>圈养/可圈可点 喷薄/厚古薄今  重申/老成持重</textarea>[退出编辑][删除][向下][向上]</li>
+                                    <li><input type="radio" name="answer"/>臧否否极泰来  乐府/乐不思蜀 屏蔽/屏气凝神[编辑][删除][向上]</li>
+                                </ol>
+                            </li>                           
+                        </ol>
+                    </div>
+                </li>     
+<script>
+/**
+1.监听节点事件
+2.事件触发，进行回调处理
+3.想服务器获取表单HTML数据
+4.替换显示内容信息
+*/
+//    document.getElementById();
+//$('.paper_edit')[0] 节点的DOM对象        
+    $(function(){
+        //JQUERY OBJECT
+       
+
+      
+    });
+
+function paper_show(dom) {
+   
+    var url = $(dom).attr('href');
+    $.get(url, 
+        function(html)
+        {
+            $('.paper_container').html(html);
+        },
+        'html'
+    );
+    return false;
+}
+
+function paper_form(dom) {
+            
+    var form = $(".paper_edit_form");
+    $.ajax({
+    type: "POST",
+    url: form.attr('action'),
+    data: form.serialize(), // serializes the form's elements.
+    success: function(html)
+    {
+        $('.paper_container').html(html);
+    }
+    });
+    return false;
+}
+
+function paper_itemgroup_add(dom) 
+{
+    var url = $(dom).attr('href');
+    $.get(url, 
+        function(html)
+        {
+            $('.itemgroups_container').append('<li class="itemgroup_container">'+html+'</li>'); 
+        },
+        'html'
+    );
+
+    return false;
+}
+
+function paper_itemgroup_create(dom)
+{               
+    var form = $(dom).parents("form.paper_itemgroup_new_form");
+    var liContainer = form.parents('li.itemgroup_container');
+
+    $.ajax({
+    type: "POST",
+    url: form.attr('action'),
+    data: form.serialize(), // serializes the form's elements.
+    success: function(html)
+    {
+       liContainer.html(html);
+    }
+    });
+    return false; 
+}
+
+function paper_itemgroup_edit(dom)
+{  
+    var url = $(dom).attr('href');
+    var divPaperItemGroupShow = $(dom).parents(".paper_itemgroup_show");
+   
+    var liContainer = $(dom).parents('li.itemgroup_container');
+    $.get(url, 
+        function(html)
+        {
+            divPaperItemGroupShow.hide();
+            liContainer.append(html);
+        },
+        'html'
+    );
+    return false;
+}
+
+function paper_itemgroup_update(dom)
+{
+    var form = $(dom).parents('.paper_itemgroup_edit_form');
+    var liContainer = form.parents('li.itemgroup_container');
+
+    $.ajax({
+    type: "POST",
+    url: form.attr('action'),
+    data: form.serialize(), // serializes the form's elements.
+    success: function(html)
+    {
+       liContainer.html(html);
+    }
+    });
+    return false; 
+}
+
+function paper_itemgroup_edit_cancel(dom)
+{
+    var form = $(dom).parents('.paper_itemgroup_form');
+    var divPaperItemGroupShow = $(".paper_itemgroup_show", form.parent());
+    divPaperItemGroupShow.show();
+    form.remove();
+}
+
+function paper_itemgroup_create_cancel(dom)
+{
+    var liContainer = $(dom).parents('li.itemgroup_container');
+    liContainer.remove();
+}
+
+function paper_itemgroup_delete(dom)
+{
+    if(confirm("确实要删除此题组吗？"))
+    {
+        var url = $(dom).attr('href');
+            var liContainer = $(dom).parents('li.itemgroup_container');
+            $.get(url, 
+                function(data)
+                {
+                liContainer.remove();
+                },
+                'json'
+            );  
+    }
+    return false;
+}
+
+function itemgroup_itemgroupitem_add(dom)
+{
+    var url = $(dom).attr('href');
+
+    var itemgroupitems_container = $('ol.itemgroupitems_container', $(dom).parents('.itemgroup_container'));
+    $.get(url, 
+        function(html)
+        {
+            itemgroupitems_container.append('<li class="itemgroupitem_container">'+html+'</li>'); 
+        },
+        'html'
+    );
+
+    return false; 
+}
+
+function itemgroup_itemgroupitem_create(dom)
+{
+    var form = $(dom).parents('.itemgroup_itemgroupitem_new_form');
+    var liContainer = form.parents('li.itemgroupitem_container');
+
+    $.ajax({
+        type: "POST",
+        url: form.attr('action'),
+        data: form.serialize(), // serializes the form's elements.
+        success: function(html)
+        {
+            liContainer.html(html);
+        }
+    });
+    return false;
+
+}
+
+</script>
+{% endblock %}
+
+
+

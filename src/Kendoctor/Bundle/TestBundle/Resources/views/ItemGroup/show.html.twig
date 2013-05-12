@@ -1,0 +1,15 @@
+<div class="paper_itemgroup_show">
+<h4>{{ entity.typeDesc }}（{{ entity.Description }}）
+    [<a href="{{ path('itemgroupitem_new', {itemgroup_id: entity.id }) }}" onclick="return itemgroup_itemgroupitem_add(this)">新增题目</a>]
+    [<a href="{{ path("itemgroup_edit", { id:entity.id }) }}" onclick="return paper_itemgroup_edit(this)">编辑</a>]
+    [<a href="{{ path("itemgroup_delete", { id:entity.id }) }}" onclick="return paper_itemgroup_delete(this)">删除</a>]
+</h4>  
+    <ol class="itemgroupitems_container">
+        {% for itemGroupItem in entity.ItemGroupItems %}
+            <li class="itemgroupitem_container">
+            {{ include("KendoctorTestBundle:ItemGroup:"~entity.type~".html.twig", {itemGroupItem: itemGroupItem, questionItem: itemGroupItem.QuestionItem }) }}
+            </li>
+        {% endfor %}
+    </ol>
+</div>
+

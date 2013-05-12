@@ -1,0 +1,11 @@
+<div class="paper_itemgroup_form">
+   <h4>{{ entity.typeDesc }} </h4>  
+    <form class="paper_itemgroup_new_form" action="{{ path('itemgroup_create', { "paper_id": paper.id }) }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <p>
+            <button type="submit" onclick="return paper_itemgroup_create(this)">Create</button>
+            <button type="button" onclick="return paper_itemgroup_create_cancel(this)">取消</button>
+        </p>
+    </form>
+
+</div>

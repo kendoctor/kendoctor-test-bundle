@@ -1,0 +1,5 @@
+kendoctor_test:
+    resource: "@KendoctorTestBundle/Controller/"
+    type:     annotation
+    prefix:   /
+

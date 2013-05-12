@@ -1,0 +1,10 @@
+
+<div class="paper_container">
+    <h2>{{entity.title}}[<a class="paper_edit" href="{{ path('paper_edit', {id: entity.id})}}" onclick="return paper_show(this);">编辑</a>][删除]</h2>
+    <p> {{entity.description}} </p>
+    <div>创建时间：{{entity.createdAt | date('Y-m-d h:i:s') }}</div>
+</div>
+
+<script>
+
+</script>

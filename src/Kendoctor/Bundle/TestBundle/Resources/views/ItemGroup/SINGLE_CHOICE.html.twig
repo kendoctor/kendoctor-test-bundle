@@ -1,0 +1,7 @@
+<h3> {{ questionItem.subject }} </h3>
+<ol>
+    {% for choiceItemAnswer in questionItem.choiceItemAnswers %}
+      <li><input type="radio" name="answers[{{itemGroupItem.id}}]" value="{{choiceItemAnswer.id}}" {% if choiceItemAnswer.isCorrect %} checked="checked" {% endif %}/> {{ choiceItemAnswer.answer }} </li>
+    {% endfor %}
+</ol>
+
